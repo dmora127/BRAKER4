@@ -53,7 +53,7 @@ rule both_agree_rescue:
         script=os.path.join(script_dir, "both_agree_rescue.py"),
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     container:
         BRAKER3_CONTAINER

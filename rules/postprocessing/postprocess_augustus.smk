@@ -33,7 +33,7 @@ rule extract_final_sequences:
         translation_table = config.get("translation_table", 1)
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     container:
         BRAKER3_CONTAINER
@@ -289,7 +289,7 @@ rule generate_statistics:
         output_dir = lambda w: get_output_dir(w)
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     shell:
         r"""

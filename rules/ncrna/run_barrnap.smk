@@ -115,7 +115,7 @@ rule merge_rrna_into_gff3:
         "benchmarks/{sample}/merge_rrna_into_gff3/merge_rrna_into_gff3.txt"
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     params:
         # highest priority first; lncRNA only when the sample has one

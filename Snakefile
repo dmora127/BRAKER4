@@ -161,6 +161,21 @@ config['slurm_args'] = {
     'max_runtime': config_parser.getint('SLURM_ARGS', 'max_runtime', fallback=60),
     'skip_mem': _skip_mem,
 }
+
+# Memory of single-threaded rules. The per-CPU share of the node is too small
+# on nodes with many cores (206200 MB // 256 = 805 MB on brain): the cgroup
+# also holds the Snakemake process that the job step starts and the
+# Singularity runtime, and downsample_training_genes, convert_to_genbank and
+# run_tsebra were OOM-killed before their shell ran. Use at least 8 GB (never
+# more than the node has) and grow with each --restart-times attempt.
+SINGLE_THREAD_MIN_MEM_MB = 8000
+def mem_single_thread(wildcards, attempt):
+    if config['slurm_args']['skip_mem']:
+        return 0
+    node = config['slurm_args']['mem_of_node']
+    base = max(node // config['slurm_args']['cpus_per_task'], SINGLE_THREAD_MIN_MEM_MB)
+    return min(base * attempt, node)
+
 # Warn only in the main process; SLURM job steps re-parse this file with the
 # job's own --cores.
 try:

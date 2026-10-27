@@ -33,7 +33,7 @@ rule filter_genemark:
         "benchmarks/{sample}/filter_genemark/filter_genemark.txt"
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     params:
         mode=lambda wildcards: get_braker_mode(wildcards.sample)

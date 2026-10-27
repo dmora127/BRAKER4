@@ -16,7 +16,7 @@ rule copy_bam2hints:
         "benchmarks/{sample}/copy_bam2hints/copy_bam2hints.txt"
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     shell:
         r"""
@@ -43,7 +43,7 @@ rule copy_prothint_hints:
         "benchmarks/{sample}/copy_prothint_hints/copy_prothint_hints.txt"
     threads: 1
     resources:
-        mem_mb=int(config['slurm_args']['mem_of_node']) // int(config['slurm_args']['cpus_per_task']),
+        mem_mb=mem_single_thread,
         runtime=int(config['slurm_args']['max_runtime'])
     shell:
         r"""
